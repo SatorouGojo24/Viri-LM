@@ -1,0 +1,12 @@
+# Ignorar carpetas de compilación local
+target/
+.mvn/
+
+# Ignorar scripts locales que no se necesitan dentro del contenedor
+mvnw
+mvnw.cmd
+
+# Ignorar archivos de Git y notas
+.git/
+.gitignore
+*.md

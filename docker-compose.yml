@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: salon-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: salon_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5454:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend 
+    container_name: salon-backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/salon_db
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=password123
+      - ANGULAR_URL=http://localhost
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: salon-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+  adminer:
+    image: adminer
+    container_name: salon-adminer
+    restart: always
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
