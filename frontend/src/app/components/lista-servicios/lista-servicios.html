@@ -1,0 +1,106 @@
+<div class="main-page">
+  <header class="header">
+    <h1 class="title">Catálogo de Servicios</h1>
+    <div class="logo-section">
+      <h2 class="brand-name">VIRI LM</h2>
+      <p class="subtitle">Beauty Studio & Spa</p>
+      <div class="business-hours">
+        <span>✨ Lunes a Sábado | 9:00 am - 18:00 pm ✨</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="services-section">
+    <div class="grid">
+      <div class="card" *ngFor="let servicio of servicios()">
+        <div class="image-box">
+          <img [src]="'/images/' + servicio.imagenNombre" [alt]="servicio.nombre">
+        </div>
+        <div class="info">
+          <h3>{{servicio.nombre}}</h3>
+          <p>{{servicio.descripcion}}</p>
+          <div class="price-tag">
+            <span>${{servicio.precio}}</span>
+            <small>⏱ {{servicio.duracionMinutos}} min</small>
+          </div>
+          <button class="btn-primary" (click)="agregarAlCarrito(servicio)">Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="floating-cart" *ngIf="carritoService.carrito().length > 0">
+    <button class="close-cart-btn" (click)="vaciarCarrito()" title="Vaciar carrito">×</button>
+    <h3>Tu Cita</h3>
+    <p>Total: <strong>${{carritoService.total()}}</strong></p>
+    <button class="btn-primary" (click)="abrirModal()">Continuar y Agendar</button>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModal()" (click)="cerrarModal()">
+  <div class="modal-wrapper" (click)="$event.stopPropagation()">
+    <div class="modal-content-pink">
+      <h3>Completa tu reserva</h3>
+      
+      <div class="form-group">
+        <label>Nombre Completo:</label>
+        <input type="text" [(ngModel)]="nombreCliente" placeholder="Ej. Ana Pérez">
+      </div>
+
+      <div class="form-group">
+        <label>Teléfono (WhatsApp):</label>
+        <input type="tel" [(ngModel)]="telefonoCliente" placeholder="Ej. 5512345678">
+      </div>
+
+      <div class="form-group">
+        <label>Día de tu cita:</label>
+        <input type="date" [(ngModel)]="fechaSeleccionada" (change)="buscarDisponibilidad()" [min]="hoy">
+      </div>
+
+      <div class="loading-slots" *ngIf="cargando()">
+        <span>Buscando horarios disponibles...</span>
+      </div>
+
+      <div class="form-group" *ngIf="horariosDisponibles.length > 0 && !cargando()">
+        <label>Horarios Disponibles:</label>
+        <div class="horarios-grid">
+           <button *ngFor="let hora of horariosDisponibles"
+                   class="time-slot"
+                   [class.selected]="hora === horaSeleccionada"
+                   (click)="horaSeleccionada = hora">
+             {{ hora }}
+           </button>
+        </div>
+      </div>
+
+      <div *ngIf="fechaSeleccionada && horariosDisponibles.length === 0 && !cargando()" class="no-slots">
+        ✨ No hay tiempo suficiente este día para realizar tus servicios. Por favor, elige otra fecha.
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn-primary" (click)="confirmarCita()">Confirmar Cita</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalExito()" (click)="cerrarModalExito()">
+  <div class="modal-wrapper" (click)="$event.stopPropagation()">
+    <div class="modal-content-pink text-center">
+      <h3>¡Cita Agendada!</h3>
+      <p>Te esperamos en el salón para consentirte.</p>
+      <button class="btn-primary" (click)="cerrarModalExito()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalError()" (click)="cerrarModalError()">
+  <div class="modal-wrapper" (click)="$event.stopPropagation()">
+    <div class="modal-content-pink text-center">
+      <h3 style="color: #8a4b58;">Aviso del Sistema ✨</h3>
+      <p style="margin: 20px 0; font-size: 1rem; line-height: 1.5;">{{ mensajeError }}</p>
+      <button class="btn-primary" (click)="cerrarModalError()">Entendido</button>
+    </div>
+  </div>
+</div>

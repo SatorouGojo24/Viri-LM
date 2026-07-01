@@ -1,0 +1,12 @@
+# Ignorar las librerías locales de Node (pesadísimas)
+node_modules/
+
+# Ignorar carpetas de compilación estática
+dist/
+.angular/
+
+# Archivos de configuración local o Git
+.git/
+.gitignore
+.editorconfig
+README.md

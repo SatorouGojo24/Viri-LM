@@ -1,0 +1,369 @@
+* { box-sizing: border-box; }
+
+/* Paleta Premium Blush (Tonos claros y elegantes) */
+$bg-gradient-start: #fffafb;
+$bg-gradient-end: #fce4e8;
+$brand-primary: #d16b80; /* Rosa frambuesa para botones y acentos */
+$brand-dark: #8a4b58;    /* Rosa oscuro/vino para títulos */
+$text-main: #4a4a4a;     /* Gris oscuro para textos normales */
+$card-bg: #ffffff;       /* Blanco puro para las tarjetas */
+
+.main-page {
+  /* Degradado suave de blanco a rosa pastel */
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+  min-height: 100vh;
+  color: $text-main;
+  padding: 20px;
+  padding-bottom: 120px;
+  /* Fuente base limpia y minimalista para toda la página */
+  font-family: 'Montserrat', sans-serif;
+}
+
+.header { text-align: center; margin-bottom: 50px; margin-top: 20px; }
+
+.title {
+  font-family: 'Playfair Display', serif;
+  color: #a37c82;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* LOGO TIPOGRÁFICO CON EFECTO DEGRADADO */
+.brand-name { 
+  font-family: 'Playfair Display', serif;
+  font-size: 4.5rem; 
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 5px; 
+  letter-spacing: 6px;
+  background: linear-gradient(to right, #6b3a45, #d16b80, #6b3a45);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 5px 15px rgba(209, 107, 128, 0.15);
+}
+
+.subtitle {
+  font-family: 'Montserrat', sans-serif;
+  color: #7a5c61;
+  font-size: 1rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-bottom: 25px;
+}
+
+.business-hours {
+  margin-top: 15px;
+  span {
+    background: #ffffff;
+    color: $brand-dark;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border: 1px solid rgba(209, 107, 128, 0.2);
+    box-shadow: 0 4px 15px rgba(209, 107, 128, 0.08);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background: $card-bg;
+  border-radius: 20px;
+  overflow: hidden;
+  border: none;
+  /* Sombra elegante que reemplaza al borde rígido */
+  box-shadow: 0 10px 25px rgba(209, 107, 128, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 15px 35px rgba(209, 107, 128, 0.25);
+    
+    .image-box img {
+      transform: scale(1.08);
+    }
+  }
+}
+
+.image-box {
+  width: 100%;
+  height: 240px; 
+  background: #f5eef0; 
+  overflow: hidden; 
+  
+  img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: transform 0.4s ease; 
+  }
+}
+
+.info { 
+  padding: 20px; 
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  h3 {
+    margin: 0;
+    color: $brand-dark;
+    font-size: 1.3rem;
+  }
+  
+  p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+
+.price-tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $brand-primary;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 5px;
+  
+  small { 
+    color: #888; 
+    font-weight: normal; 
+    font-size: 0.9rem;
+  }
+}
+
+.btn-primary {
+  background: $brand-primary;
+  color: #ffffff;
+  border: none;
+  padding: 12px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, background 0.2s;
+  margin-top: 10px;
+  
+  &:hover { 
+    background: #b85c6f;
+    transform: scale(1.02);
+  }
+}
+
+.btn-secondary {
+  background: #fce4e8;
+  color: $brand-dark;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+  
+  &:hover { background: #f8c9d2; }
+}
+
+/* ========================================= */
+/* CARRITO FLOTANTE (Adaptado al tema claro) */
+/* ========================================= */
+.floating-cart {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #ffffff; 
+  color: #333; 
+  padding: 25px 30px;
+  border-radius: 20px;
+  border: 2px solid $brand-primary; 
+  box-shadow: 0 15px 35px rgba(209, 107, 128, 0.25); 
+  z-index: 100;
+  text-align: center;
+  min-width: 250px;
+  animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  h3 { 
+    margin-top: 0; 
+    color: $brand-dark; 
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    strong { color: $brand-primary; font-size: 1.3rem; }
+  }
+}
+
+.close-cart-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  line-height: 1;
+
+  &:hover {
+    color: $brand-primary;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(80px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ========================================= */
+/* MODAL FORMULARIO                          */
+/* ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(3px); 
+}
+
+.modal-wrapper {
+  background: #ffffff;
+  padding: 35px; 
+  border-radius: 24px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(209, 107, 128, 0.2);
+}
+
+.modal-content-pink {
+  background: transparent;
+  color: $text-main; 
+  
+  h3 { 
+    color: $brand-dark; 
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    
+    label { 
+      margin-bottom: 8px; 
+      font-size: 0.95rem; 
+      color: #555; 
+      font-weight: 600;
+    }
+    
+    input {
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      background: #fafafa;
+      color: #333;
+      font-size: 1rem;
+      transition: border-color 0.3s, background 0.3s;
+      
+      &:focus { 
+        outline: none;
+        border-color: $brand-primary;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(209, 107, 128, 0.1);
+      }
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 35px;
+  }
+}
+
+.text-center { text-align: center; }
+/* ESTILOS PARA LOS BOTONES DE HORA */
+  .horarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+    gap: 10px;
+    margin-top: 5px;
+  }
+
+  .time-slot {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    padding: 10px 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #555;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: $brand-primary;
+      color: $brand-primary;
+      background: #fff5f7;
+    }
+
+    &.selected {
+      background: $brand-primary;
+      color: white;
+      border-color: $brand-primary;
+      box-shadow: 0 4px 12px rgba(209, 107, 128, 0.35);
+      transform: scale(1.05);
+    }
+  }
+
+  .no-slots {
+    color: $brand-dark;
+    background: #fce4e8;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    margin-top: 15px;
+    font-weight: 500;
+    text-align: center;
+    border: 1px dashed $brand-primary;
+  }
+  /* Mensaje de espera al buscar horarios */
+  .loading-slots {
+    text-align: center;
+    color: #a37c82;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-top: 15px;
+    padding: 10px;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
