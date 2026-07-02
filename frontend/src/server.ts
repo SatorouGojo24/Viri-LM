@@ -5,28 +5,21 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
-const browserDistFolder = join(import.meta.dirname, '../browser');
-
+// Usamos resolve para asegurar que siempre encuentre la carpeta correcta
+const browserDistFolder = resolve(process.cwd(), 'dist/frontend/browser');
 const app = express();
-const angularApp = new AngularNodeAppEngine();
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
+// FUNDAMENTAL PARA RENDER: Confiar en el proxy
+app.set('trust proxy', true);
 
-/**
- * Serve static files from /browser
- */
+// Seguridad SSR de Angular (con as any para evitar errores de TypeScript locales)
+const angularApp = new AngularNodeAppEngine({
+  trustProxyHeaders: true, 
+  allowedHosts: ['*'] 
+} as any);
+
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
@@ -35,34 +28,23 @@ app.use(
   }),
 );
 
-/**
- * Handle all other requests by rendering the Angular application.
- */
 app.use((req, res, next) => {
   angularApp
     .handle(req)
     .then((response) =>
       response ? writeResponseToNodeResponse(response, res) : next(),
     )
-    .catch(next);
+    .catch((err) => {
+      console.error('SSR Error:', err);
+      next(err);
+    });
 });
 
-/**
- * Start the server if this module is the main entry point, or it is ran via PM2.
- * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
- */
 if (isMainModule(import.meta.url) || process.env['pm_id']) {
   const port = process.env['PORT'] || 4000;
-  app.listen(port, (error) => {
-    if (error) {
-      throw error;
-    }
-
+  app.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
 
-/**
- * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
- */
 export const reqHandler = createNodeRequestHandler(app);

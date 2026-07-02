@@ -7,7 +7,8 @@ COPY . .
 
 # Le asignamos 4GB de RAM a Node
 ENV NODE_OPTIONS="--max-old-space-size=4096"
-RUN npm run build --configuration=production
+# CAMBIO CLAVE: Le decimos a Docker que compile en modo desarrollo
+RUN npx ng build --configuration=development
 
 # ETAPA 2: Ejecución (Run)
 FROM nginx:alpine
