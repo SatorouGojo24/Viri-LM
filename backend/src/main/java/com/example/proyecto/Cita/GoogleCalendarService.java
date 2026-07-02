@@ -7,8 +7,11 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -18,13 +21,31 @@ import java.util.Date;
 @Service
 public class GoogleCalendarService {
 
-    // El correo de Viri donde aparecerán los eventos
+    @Value("${google.credentials.path}")
+    private String credentialsPath;
+
+    
     private static final String CALENDAR_ID = "vimaco091195@gmail.com"; 
 
     public void crearEvento(String nombreCliente, String servicios, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         try {
-            // 1. Cargar la llave secreta de nuestro robot
-            InputStream in = GoogleCalendarService.class.getResourceAsStream("/credenciales-google.json");
+            
+            InputStream in;
+            File secretFile = new File(credentialsPath);
+            
+            if (secretFile.exists()) {
+                
+                in = new FileInputStream(secretFile);
+            } else {
+                // Si no existe, asume que estamos en local y lo busca en el resources/ del proyecto
+                String cp = credentialsPath.startsWith("/") ? credentialsPath : "/" + credentialsPath;
+                in = GoogleCalendarService.class.getResourceAsStream(cp);
+            }
+
+            if (in == null) {
+                throw new RuntimeException("No se encontró el archivo de credenciales de Google: " + credentialsPath);
+            }
+
             GoogleCredential credential = GoogleCredential.fromStream(in)
                     .createScoped(Collections.singleton(CalendarScopes.CALENDAR));
 
